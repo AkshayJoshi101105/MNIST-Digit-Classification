@@ -1,0 +1,53 @@
+| Metric                    | Description                                              |
+| ------------------------- | -------------------------------------------------------- |
+| 'accuracy'                | For classification (auto-adjusts for sparse/categorical) |
+| 'mae' or 'mse'            | For regression (mean absolute/squared error)             |
+| 'AUC'                     | For binary classification (Area Under Curve)             |
+| 'Precision', 'Recall'     | For imbalanced classification                            |
+
+
+
+-> Why we used 2 variables in "loss, accuracy = model.evaluate(X_test, y_test)"
+
+    When you compile your model using model.compile(), you specify the metrics you want to track. For example:
+    
+    model.compile(optimizer='adam',
+                loss='sparse_categorical_crossentropy',
+                metrics=['accuracy'])
+    Here, you're telling the model to track both the loss and the accuracy during training and evaluation.
+
+    So, when you later evaluate the model using:
+    loss, accuracy = model.evaluate(X_test, y_test)
+
+    The model returns two values:
+    1. loss – how well or poorly the model performed on the test data.
+    2. accuracy – how accurate the model was at predicting the labels.
+
+    That’s why you use two variables to store the result: loss and accuracy.
+
+
+    You can include more metrics during compilation like this:
+    model.compile(optimizer='adam',
+                loss='sparse_categorical_crossentropy',
+                metrics=['accuracy', 'precision', 'recall'])
+
+    Now, when you evaluate the model:
+    loss, acc, prec, rec = model.evaluate(X_test, y_test)
+
+    It will return four values:
+    loss: the test loss,  acc: test accuracy,  prec: precision,  rec: recall
+
+    If you don’t include the metrics parameter at all, only the loss will be returned.
+
+
+
+
+
+->model.evaluate(X_test, y_test)
+    Purpose: To test the model's performance on test data.
+    Needs labels (y_test) — because it compares predictions with true answers.
+    Usage: When you want to quantitatively measure how well the model is performing.
+->model.predict(X_test)
+    Purpose: To make raw predictions from the input data.
+    No labels needed
+    Usage: When you want to know what the model predicts, not how accurate it is.
